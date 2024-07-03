@@ -153,9 +153,13 @@
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-      <h3 class="py-2">American Community Survery Residency Information</h3>
+      <h3 class="py-2">America's Migrane Hotsposts</h3>
       <p>
-        2020 data was collected using the American Community Survey API.  Data was then copied to a csv file then joined into a geojson to be displayed using leaflet. Percentages were calculated by taking raw numbers listed and dividing the by the raw total residences in the data. Note: You can zoom over to Alaska, Hawaii and Puerto Rico as well if you are interested in their numbers.
+        Metro boundaries were from cartographyvectors.com.  https://cartographyvectors.com/map/1296-us-metro-areas-2020.
+        Migrane data was collected from Sterling's Best Places 2006 study "America's Migraine Hotspot". https://www.bestplaces.net/docs/studies/migraines.aspx 
+        Data was then joined into the metros geojson to be displayed using leaflet. 
+        Percentages were calculated by dividing metro rankings by total number of metros
+        Note: Some metros had to be combined because sperling's 2006 metro defintions were different than 2020 ones.
       </p>
       <hr />
       <ul class="list-unstyled">
@@ -178,10 +182,7 @@
   <!-- ui is outside of container-fluid and will be dynamically added to map -->
   <div class="form-group me-3 mt-3" id="dropdown-ui">
         <select class="form-control bg-primary text-white">
-            <option value="OCCUPIED" selected>Percentage of residences that are occupied</option>
-            <option value="VACANT">Percentage of residences that are vacant</option>
-            <option value="OWNER">Percentage of residences that are owned</option>
-            <option value="RENTER">Percentage of residences that are rented</option>
+            <option value="Rank" selected>Migrane Hotspot Percentile</option>
         </select>
   </div>
 
@@ -234,19 +235,16 @@
 
     // set global variables for map layer,
     // mapped attribute, and normalizing attribute
-    let attributeValue = "OCCUPIED";
-    const normValue = "TOTAL";
+    let attributeValue = "Rank";
+    const normValue = "Total";
 
     //create object to hold legend titles
     const labels = {
-      OCCUPIED: "Percentage of residences that are occupied",
-      VACANT: "Percentage of residences that are vacant",
-      OWNER: "Percentage of residences that are owned",
-      RENTER: "Percentage of residences that are rented",
+      Rank: "Migrane Hotspot Percentile",
     };
 
     // fetch data
-    fetch("data/acs.geojson")
+    fetch("data/us-metro-areas-2020_1296.geojson")
       // after it is returned...
       .then(function (response) {
         // Parse the JSON into a useable format, then return it
@@ -278,7 +276,7 @@
       const year = date.getFullYear();
       const month = date.toLocaleString('default', { month: 'long' });
       const footerText = document.querySelector("footer p");
-      footerText.innerHTML = `${month}, ${year} | New Maps Plus Assignment completed by Charles Altendorf`;
+      footerText.innerHTML = `${month}, ${year} | Dedicated to Wendy Altendorf`;
     }
 
     function drawMap(data) {
@@ -339,7 +337,7 @@
         });
 
       // assemble string sequence of info for tooltip (end line break with + operator)
-      let tooltipInfo = `<b>${props["NAME"]} County</b></br>
+      let tooltipInfo = `<b>${props["NAME"]}</b></br>
       ${((props[attributeValue] / props[normValue]) * 100).toLocaleString()}%`;
 
       // bind a tooltip to layer with county-specific information
