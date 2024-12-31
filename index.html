@@ -107,6 +107,18 @@
 
     /* Small devices (landscape phones, 576px and up) */
     @media (min-width: 576px) {}
+    /* For small screens (phones and smaller devices) */
+    @media (max-width: 576px) {
+      h1 {
+        font-size: 1.5rem; /* Adjust to the desired size */
+        line-height: 1.2;  /* Adjust line spacing for readability */
+        margin: 0.5rem 0;  /* Add some spacing adjustments */
+      }
+
+      header .row {
+        text-align: center; /* Center align the content if needed */
+      }
+    }
 
     /* Medium devices (tablets, 768px and up) */
     @media (min-width: 768px) {}
@@ -123,7 +135,7 @@
   <div class="container-fluid">
     <header class="row bg-dark text-white p-2">
       <div class="col-8">
-        <h1>Migraine Hotspots</h1>
+        <h1>America's Migraine Hotspots</h1>
       </div>
       <div class="col-4 align-self-center">
         <p class="d-flex justify-content-end my-auto">
@@ -315,7 +327,7 @@
         },
       }).addTo(map);
       updateMap(counties);
-      addUi(counties);
+      //addUi(counties);
      }
 
     function updateMap(counties) {
